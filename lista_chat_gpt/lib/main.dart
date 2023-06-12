@@ -54,26 +54,28 @@ class _TodoAppState extends State<TodoApp> {
               builder: (BuildContext context) {
                 TextEditingController taskController = TextEditingController();
 
-                return AlertDialog(
-                  title: Text('Adicionar Tarefa'),
-                  content: TextField(
-                    controller: taskController,
+                return MaterialApp(
+                  home: AlertDialog(
+                    title: Text('Adicionar Tarefa'),
+                    content: TextField(
+                      controller: taskController,
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text('Cancelar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: Text('Adicionar'),
+                        onPressed: () {
+                          addTask(taskController.text);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
                   ),
-                  actions: <Widget>[
-                    TextButton(
-                      child: Text('Cancelar'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    TextButton(
-                      child: Text('Adicionar'),
-                      onPressed: () {
-                        addTask(taskController.text);
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
                 );
               },
             );
