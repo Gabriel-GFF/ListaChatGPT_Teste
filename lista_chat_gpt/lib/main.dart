@@ -47,7 +47,7 @@ class _TodoAppState extends State<TodoApp> {
                     child: TextField(
                       controller: taskController,
                       decoration: InputDecoration(
-                        labelText: 'Nova Tarefa',
+                        labelText: 'Novsa Tarefa',
                       ),
                     ),
                   ),
