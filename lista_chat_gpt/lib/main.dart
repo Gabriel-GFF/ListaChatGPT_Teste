@@ -11,10 +11,15 @@ class TodoApp extends StatefulWidget {
 
 class _TodoAppState extends State<TodoApp> {
   List<String> tasks = [];
+  TextEditingController taskController = TextEditingController();
 
-  void addTask(String task) {
+  void addTask() {
     setState(() {
-      tasks.add(task);
+      String newTask = taskController.text;
+      if (newTask.isNotEmpty) {
+        tasks.add(newTask);
+        taskController.clear();
+      }
     });
   }
 
@@ -32,54 +37,44 @@ class _TodoAppState extends State<TodoApp> {
         appBar: AppBar(
           title: Text('Lista de Tarefas'),
         ),
-        body: ListView.builder(
-          itemCount: tasks.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(tasks[index]),
-              trailing: IconButton(
-                icon: Icon(Icons.check),
-                onPressed: () {
-                  completeTask(index);
+        body: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      controller: taskController,
+                      decoration: InputDecoration(
+                        labelText: 'Nova Tarefa',
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: addTask,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: tasks.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(tasks[index]),
+                    trailing: IconButton(
+                      icon: Icon(Icons.check),
+                      onPressed: () {
+                        completeTask(index);
+                      },
+                    ),
+                  );
                 },
               ),
-            );
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                TextEditingController taskController = TextEditingController();
-
-                return MaterialApp(
-                  home: AlertDialog(
-                    title: Text('Adicionar Tarefa'),
-                    content: TextField(
-                      controller: taskController,
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        child: Text('Cancelar'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      TextButton(
-                        child: Text('Adicionar'),
-                        onPressed: () {
-                          addTask(taskController.text);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          },
+            ),
+          ],
         ),
       ),
     );
